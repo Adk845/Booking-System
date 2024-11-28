@@ -158,10 +158,6 @@
                                 <input type="time" class="form-control" id="eventEndTime">
                             </div>
                         </div>
-                        <!-- <div class="form-group">
-                            <label for="eventName">Your Name</label>
-                            <input type="text" class="form-control" id="eventName" placeholder="Enter your name">
-                        </div> -->
 
                         <div class="form-group">
                             <!-- <label for="eventName">Your Name</label> -->
@@ -219,6 +215,12 @@
     eventRender: function(event, element) {
         
         element.find('.fc-title').append("<br><strong>" + event.name + "</strong>");
+
+        if (event.title === "Tradis Room") {
+        element.css("background-color", "yellow"); 
+    } else if (event.title === "Komodo") {
+        element.css("background-color", "orange"); 
+    }
     },
 
     select: function(start, end, allDay) {
