@@ -21,7 +21,7 @@ class fullCalenderController extends Controller
     
             return response()->json($data);
         }
-        return view('fullcalender');
+        return view('dashboard');
     }
     
     public function ajax(Request $request)
