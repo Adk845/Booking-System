@@ -19,7 +19,7 @@
         
         body {
         font-family: 'Roboto', sans-serif;
-        background-color: #f4f4f9;  
+        background-color: #000000;  
         color: #333;
         overflow-x: hidden;
         transition: all 0.3s ease;
@@ -37,7 +37,8 @@
         max-height: 70vh; 
     }
     #calendar {
-        max-width: 1150px;
+        max-width: 900px;
+        /* max-height: 80vh; */
         margin: 50px auto;
         background-color: #fff;
         border-radius: 12px;
@@ -131,26 +132,45 @@
         <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     </head>
     <body>
-        <div class="row">
-            <div class="col-md-3 side_information p-4">
-                <div class="header_side">
-                    <h3>Booking this Month</h3>
+        <div class="kontener row">
+            <div class="col-md-2 mt-5 side_information hidden-scrollbar">
+                <div class="header_side p-2">
+                    <h3 class="title_booking">Booking this Month</h3>
                 </div>
                 @foreach ($events as $event)
-                <div class="card mt-3">
+                <div class="card m-3">
                     <div class="card-header {{ $event->title === 'Tradis Room' ? 'Tradis' : 'Komodo' }}">
                       {{ $event->title }}
                     </div>
                     <div class="card-body">
                       <h5 class="card-title">{{ $event->date_start }}</h5>
                       <p>{{ $event->time_start . ' - ' . $event->time_end }}</p>
+                      <p>Booked by : {{ $event->name }}</p>
                     </div>
                 </div>
                 @endforeach
                
                   
             </div>
-            <div class="col-md-8" id="calendar"></div>
+            <div class="col-md-6" id="calendar"></div>
+            <div class="col-md-3 mt-5 m-5">
+                <div class="card">
+                    <div class="card-header">
+                      Information
+                    </div>
+                    <div class="card-body">
+                     <div class="information_row d-flex align-items-center">
+                        <div id="box_tradis"></div>
+                        <h5>Tradis</h5>
+                     </div>
+                     <div class="information_row d-flex align-items-center">
+                        <div id="box_komodo"></div>
+                        <h5>Komodo</h5>
+                     </div>
+                    
+                    </div>
+                  </div>
+            </div>
         </div>
 
         <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
@@ -236,9 +256,9 @@
         element.find('.fc-title').append("<br><strong>" + event.name + "</strong>");
 
         if (event.title === "Tradis Room") {
-        element.css("background-color", "yellow"); 
+        element.css("background-color", "#FEEE91"); 
     } else if (event.title === "Komodo") {
-        element.css("background-color", "orange"); 
+        element.css("background-color", "#EB5B00"); 
     }
     },
 

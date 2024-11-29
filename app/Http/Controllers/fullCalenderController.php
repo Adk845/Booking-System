@@ -23,7 +23,8 @@ class fullCalenderController extends Controller
             DB::raw('TIME(start) as time_start'),
             DB::raw('DATE(end) as date_end'),
             DB::raw('TIME(end) as time_end'),
-            'title'
+            'title',
+            'name'
         )->whereYear('start', $current_year)->whereMonth('start', $current_month)->get();
         return view('dashboard', compact('events'));
 
