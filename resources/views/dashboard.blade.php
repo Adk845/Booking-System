@@ -37,7 +37,7 @@
         max-height: 70vh; 
     }
     #calendar {
-        max-width: 1000px;
+        max-width: 1150px;
         margin: 50px auto;
         background-color: #fff;
         border-radius: 12px;
@@ -128,10 +128,29 @@
         color: #333;
     }
         </style>
+        <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     </head>
     <body>
-        <div class="container">
-            <div id="calendar"></div>
+        <div class="row">
+            <div class="col-md-3 side_information p-4">
+                <div class="header_side">
+                    <h3>Booking this Month</h3>
+                </div>
+                @foreach ($events as $event)
+                <div class="card mt-3">
+                    <div class="card-header {{ $event->title === 'Tradis Room' ? 'Tradis' : 'Komodo' }}">
+                      {{ $event->title }}
+                    </div>
+                    <div class="card-body">
+                      <h5 class="card-title">{{ $event->date_start }}</h5>
+                      <p>{{ $event->time_start . ' - ' . $event->time_end }}</p>
+                    </div>
+                </div>
+                @endforeach
+               
+                  
+            </div>
+            <div class="col-md-8" id="calendar"></div>
         </div>
 
         <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
