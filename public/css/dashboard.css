@@ -1,0 +1,21 @@
+.side_information{
+    background-color: #333333;
+    height: 90vh;
+    width: 300px;
+    margin: 20px;
+    border-radius: 15px;
+    overflow: scroll;
+    margin-left: 30px;
+}
+
+.Tradis{
+    background-color: #f1c40f;
+}
+
+.Komodo{
+    background-color: #f39c12;
+}
+
+.header_side{
+    color: white;
+}
