@@ -35,10 +35,12 @@
     
 }
 
+/* PENTING INI CSS UNTUK MENGHILANGKAN SCROLLBAR TAPI TETAP SCROLLABLE, BIAR ESTETIK */
 .hidden-scrollbar {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
+/* =========================================================================== */
 /* 
 .hidden-scrollbar::-webkit-scrollbar {
     display: none;
@@ -47,6 +49,11 @@
 #box_tradis, #box_komodo{
     height: 50px;
     width: 50px;
+    border: solid black 1px;
+    border-radius: 15px;
+}
+
+.information_row{
 }
 
 /* #box_tradis{

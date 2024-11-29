@@ -133,9 +133,9 @@
     </head>
     <body>
         <div class="kontener row">
-            <div class="col-md-2 mt-5 side_information hidden-scrollbar">
+            <div class="col-md-2 mt-5  m-5 side_information hidden-scrollbar">
                 <div class="header_side p-2">
-                    <h3 class="title_booking">Booking this Month</h3>
+                    <h3 class="title_booking">Booking This Month</h3>
                 </div>
                 @foreach ($events as $event)
                 <div class="card m-3">
@@ -159,13 +159,14 @@
                       Information
                     </div>
                     <div class="card-body">
-                     <div class="information_row d-flex align-items-center">
+                     <div class="information_row d-flex align-items-center mb-3">
                         <div id="box_tradis"></div>
-                        <h5>Tradis</h5>
+                        <h5  class="ms-3">Tradis Room</h5>
+                        {{-- <h5>Tradis</h5> --}}
                      </div>
                      <div class="information_row d-flex align-items-center">
                         <div id="box_komodo"></div>
-                        <h5>Komodo</h5>
+                        <h5  class="ms-3">Komodo Room</h5>
                      </div>
                     
                     </div>
