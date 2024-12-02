@@ -27,12 +27,18 @@
     border-radius: 15px;
 }
 .header_side{
-    background-color: orange;
+    color: black;
+    background-color: rgb(230, 230, 230);
     position: sticky;
     top: 0;
     z-index: 100;
     width: 100%;
     
+}
+
+.title_booking{
+    font-size: 20px;
+
 }
 
 /* PENTING INI CSS UNTUK MENGHILANGKAN SCROLLBAR TAPI TETAP SCROLLABLE, BIAR ESTETIK */
@@ -55,6 +61,8 @@
 
 .information_row{
 }
+
+
 
 /* #box_tradis{
     background-color: 
