@@ -30,13 +30,15 @@ Route::middleware('auth')->group(function () {
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');  
-Route::get('/fullcalender', [fullCalenderController::class, 'index'])->name('index');
-Route::post('/fullCalenderAjax', [fullCalenderController::class, 'ajax'])->name('ajax');
+// Route::get('/fullcalender', [fullCalenderController::class, 'index'])->name('index');
+// Route::post('/fullCalenderAjax', [fullCalenderController::class, 'ajax'])->name('ajax');
 
   
 });
 
 //api
 Route::get('/dashboard_api', [fullCalenderController::class, 'dashboard_api'])->name('dashboard_data');
+Route::get('/fullcalender', [fullCalenderController::class, 'index'])->name('index');
+Route::post('/fullCalenderAjax', [fullCalenderController::class, 'ajax'])->name('ajax');
 
 require __DIR__.'/auth.php';
