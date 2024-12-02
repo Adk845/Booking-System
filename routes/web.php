@@ -36,4 +36,7 @@ Route::post('/fullCalenderAjax', [fullCalenderController::class, 'ajax'])->name(
   
 });
 
+//api
+Route::get('/dashboard_api', [fullCalenderController::class, 'dashboard_api'])->name('dashboard_data');
+
 require __DIR__.'/auth.php';

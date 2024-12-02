@@ -29,6 +29,52 @@ class fullCalenderController extends Controller
         return view('dashboard', compact('events'));
 
     }
+
+    public function dashboard_api(){
+        $current_year = Carbon::now()->year;
+        $current_month = Carbon::now()->month;
+        $startOfWeek = Carbon::now()->startOfWeek(); // Default hari Senin
+        $endOfWeek = Carbon::now()->endOfWeek();
+        $datas = [];
+
+        $events = event::select(
+            DB::raw('DATE(start) as date_start'),
+            DB::raw('TIME(start) as time_start'),
+            DB::raw('DATE(end) as date_end'),
+            DB::raw('TIME(end) as time_end'),
+            'title',
+            'name'
+        )->whereBetween('start', [$startOfWeek, $endOfWeek])->orderBy('start', 'asc')->get();
+
+        $datas = $events->map(function ($event) {
+            return [
+                'day'      => Carbon::parse($event->date_start)->format('l'), // Nama hari
+                'title'         => $event->title, // Opsional: menambahkan data lain
+                'name'          => $event->name,  // Opsional
+                'date_start'    => $event->date_start,
+                'date_end'      => $event->date_end,
+                'time_start'    => $event->time_start,
+                'time_end'      => $event->time_end,
+
+            ];
+        });
+        // foreach($events as $event)
+        // {
+        //     $day_name = Carbon::parse($event->start)->format('l');
+        //     array_push($day, $day_name);
+        // }
+        return response()->json($datas);
+    
+        // $events = event::select(
+        //     DB::raw('DATE(start) as date_start'),
+        //     DB::raw('TIME(start) as time_start'),
+        //     DB::raw('DATE(end) as date_end'),
+        //     DB::raw('TIME(end) as time_end'),
+        //     'title',
+        //     'name'
+        // )->whereBetween('start', $current_year)->whereMonth('start', $current_month)->get();
+        // return response()->json($events);
+    }
     public function index(Request $request)
     {
         if ($request->ajax()) {
