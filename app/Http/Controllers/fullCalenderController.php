@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\kirimEmail;
 use App\Models\event;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 class fullCalenderController extends Controller
 {
     //
@@ -99,6 +101,23 @@ class fullCalenderController extends Controller
                     'start' => $request->start,  
                     'end' => $request->end       
                 ]);
+
+                //======BAGIAN KIRIM EMAIL============
+                
+                $data_email = [
+                    'subject' => "Booking Meeting room notifications",
+                    'sender_email' => 'experimencobacoba@gmail.com',
+                    'sender_name' => 'Mathew',
+                    'title' => $request->title,
+                    'name' => $request->name,
+                    'user_email' => $request->user_email,
+                    'start' => $request->start,
+                    'end' => $request->end,
+                ];
+                mail::to($request->user_email)->send(new kirimEmail($data_email));
+                //=========================================
+
+
                 return response()->json($event);
                 break;
     

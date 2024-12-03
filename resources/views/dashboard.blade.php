@@ -225,6 +225,8 @@
             <script>
                  var SITEURL = "{{ url('/') }}";
                  var loggedInUserName = "{{ Auth::user()->name }}";  
+                 var user_name = "{{ Auth::user()->name }}";
+                 var user_email = "{{ Auth::user()->email }}"
             </script>
             <script type="module" src="{{ asset('js/calender.js') }}"></script>
             <!-- Bootstrap JS -->
