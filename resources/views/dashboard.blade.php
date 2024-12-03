@@ -209,7 +209,15 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary" id="saveEventButton">Save</button>
+                            <button type="button" class="btn btn-primary" id="saveEventButton">
+                                <p id="tulisanSave" style="margin: 0px">
+                                    Save
+                                </p>
+                                <div id="loading" style="display: none">
+                                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span class="visually-hidden" role="status">Loading...</span>
+                                </div>
+                            </button>
                             <button type="button" class="btn btn-danger" id="deleteEventButton" style="display: none;">Delete</button>
     
                         </div>

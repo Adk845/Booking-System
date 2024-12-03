@@ -75,6 +75,9 @@ $(document).ready(function(){
             $('#deleteEventButton').hide();
 
             $('#saveEventButton').off('click').on('click', function() {
+                $('#tulisanSave').hide();
+                $('#loading').show();
+                $('#saveEventButton').prop('disabled', true);
                 var name = $('#eventName').val();  
                 var title = $('#eventTitle').val();
                 var date = $('#eventDate').val();
