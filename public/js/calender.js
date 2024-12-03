@@ -93,6 +93,8 @@ $(document).ready(function(){
                             title: title,
                             start: startFormatted,
                             end: endFormatted,
+                            user_email: user_email,
+                            user_name: user_name,
                             type: 'add'
                         },
                         success: function(data) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\emailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\fullCalenderController;
 
