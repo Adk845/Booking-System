@@ -103,7 +103,7 @@ class fullCalenderController extends Controller
                 ]);
 
                 //======BAGIAN KIRIM EMAIL============
-                
+                //variable yang juga akan dikirim ke template email di resource/view/mail/kirimEmail.blade.php
                 $data_email = [
                     'subject' => "Booking Meeting room notifications",
                     'sender_email' => 'experimencobacoba@gmail.com',
@@ -114,6 +114,10 @@ class fullCalenderController extends Controller
                     'start' => $request->start,
                     'end' => $request->end,
                 ];
+                // satu file mail (App/mail) mewakili satu template email , karena ngarahin email ada di App/mail/kirimEmail
+                // mau ngirim view yang berbeda ngarahin nya dari App/mail/kirimEmail
+                // alur nya : 
+                // fullCalenderController.php -> kirimEmail.php -> kirimEmail.blade.php
                 mail::to($request->user_email)->send(new kirimEmail($data_email));
                 //=========================================
 
