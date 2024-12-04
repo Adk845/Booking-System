@@ -96,40 +96,66 @@ class fullCalenderController extends Controller
             case 'add':
                 $event = Event::create([
                     'name' => $request->name,
-
+                    'desc' => $request->desc,
                     'title' => $request->title,
-                    'start' => $request->start,  
+                    'start' => $request->start,
                     'end' => $request->end       
                 ]);
+            
+                //  BAGIAN KIRIM EMAIL 
+            
 
-                //======BAGIAN KIRIM EMAIL============
-                //variable yang juga akan dikirim ke template email di resource/view/mail/kirimEmail.blade.php
                 $data_email = [
                     'subject' => "Booking Meeting room notifications",
-                    'sender_email' => 'experimencobacoba@gmail.com',
-                    'sender_name' => 'Mathew',
+                    'sender_email' => 'Booking.Room@resindori.com',
+                    'sender_name' => 'Booking Room System',
                     'title' => $request->title,
                     'name' => $request->name,
+                    'desc' => $request->desc,
                     'user_email' => $request->user_email,
                     'start' => $request->start,
                     'end' => $request->end,
                 ];
-                // satu file mail (App/mail) mewakili satu template email , karena ngarahin email ada di App/mail/kirimEmail
-                // mau ngirim view yang berbeda ngarahin nya dari App/mail/kirimEmail
-                // alur nya : 
-                // fullCalenderController.php -> kirimEmail.php -> kirimEmail.blade.php
-                mail::to($request->user_email)->send(new kirimEmail($data_email));
-                //=========================================
-
-
+            
+                // Membuat file 
+                $ics_content = "BEGIN:VCALENDAR\r\n";
+                $ics_content .= "VERSION:2.0\r\n";
+                $ics_content .= "PRODID:-//Resindo//NONSGML v1.0//EN\r\n";
+                $ics_content .= "BEGIN:VEVENT\r\n";
+                $ics_content .= "SUMMARY:" . $request->title . "\r\n";
+                $ics_content .= "DESCRIPTION:" . $request->desc . "\r\n";
+                $ics_content .= "DTSTART:" . \Carbon\Carbon::parse($request->start)->format('Ymd\THis\Z') . "\r\n";
+                $ics_content .= "DTEND:" . \Carbon\Carbon::parse($request->end)->format('Ymd\THis\Z') . "\r\n";
+                $ics_content .= "LOCATION:Meeting Room\r\n";
+                $ics_content .= "STATUS:CONFIRMED\r\n";
+                $ics_content .= "BEGIN:VALARM\r\n";
+                $ics_content .= "TRIGGER:-PT10M\r\n";  // Mengatur pengingat waktu 
+                $ics_content .= "DESCRIPTION:Reminder\r\n";
+                $ics_content .= "ACTION:DISPLAY\r\n";
+                $ics_content .= "END:VALARM\r\n";
+                $ics_content .= "END:VEVENT\r\n";
+                $ics_content .= "END:VCALENDAR\r\n";
+            
+                // Simpan file ICS sementara di server
+                $ics_filename = storage_path('app/meeting_event.ics');
+                file_put_contents($ics_filename, $ics_content);
+            
+                // Kirim email dengan lampiran ICS
+                Mail::to($request->user_email)->send(new kirimEmail($data_email, $ics_filename));
+            
+                // Menghapus file ICS setelah dikirim
+                unlink($ics_filename);
+            
                 return response()->json($event);
                 break;
+            
     
             case 'update':
                 $event = Event::find($request->id);
                 if ($event) {
                     $event->update([
                         'name' => $request->name,
+                        'desc' => $request->desc,
                         'title' => $request->title,
                         'start' => $request->start,  
                         'end' => $request->end       
