@@ -170,70 +170,70 @@
             </div>
     
             <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Create Booking</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eventModalLabel">Create Booking</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row d-flex justify-content-between">
+                                <div class="form-group col-4">
+                                    <label for="eventDate">Date</label>
+                                    <input type="date" class="form-control" id="eventDate">
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="eventStartTime">Start Time</label>
+                                    <input type="time" class="form-control" id="eventStartTime">
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="eventEndTime">End Time</label>
+                                    <input type="time" class="form-control" id="eventEndTime">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <!-- <label for="eventName">Your Name</label> -->
+                                <input type="text" class="form-control" id="eventName" placeholder="Enter your name" style="display: none;">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="eventTitle">Room</label>
+                                <select class="form-control" id="eventTitle">
+                                    <option value="Komodo Room">Komodo Room</option>
+                                    <option value="Tradis Room">Tradis Room</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventsubject">Subject Meeting</label>
+                                <input class="form-control" id="eventsubject" rows="3" placeholder="Enter a Subject Meeting"></input>
+                            </div>
+                            <!-- Input for description -->
+                            <div class="form-group">
+                                <label for="eventDescription">Description</label>
+                                <textarea class="form-control" id="eventDescription" rows="3" placeholder="Enter a brief description of the Meeting"></textarea>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="saveEventButton">
+                                <p id="tulisanSave" style="margin: 0px">
+                                    Save
+                                </p>
+                                <div id="loading" style="display: none">
+                                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span class="visually-hidden" role="status">Loading...</span>
+                                </div>
+                            </button>
+                            <button type="button" class="btn btn-danger" id="deleteEventButton" style="display: none;">Delete</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="form-row d-flex justify-content-between">
-                    <div class="form-group col-4">
-                        <label for="eventDate">Date</label>
-                        <input type="date" class="form-control" id="eventDate">
-                    </div>
-                    <div class="form-group col-4">
-                        <label for="eventStartTime">Start Time</label>
-                        <input type="time" class="form-control" id="eventStartTime">
-                    </div>
-                    <div class="form-group col-4">
-                        <label for="eventEndTime">End Time</label>
-                        <input type="time" class="form-control" id="eventEndTime">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <!-- <label for="eventName">Your Name</label> -->
-                    <input type="text" class="form-control" id="eventName" placeholder="Enter your name" style="display: none;">
-                </div>
-
-                <div class="form-group">
-                    <label for="eventTitle">Room</label>
-                    <select class="form-control" id="eventTitle">
-                        <option value="Komodo Room">Komodo Room</option>
-                        <option value="Tradis Room">Tradis Room</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="eventsubject">Subject Meeting</label>
-                    <input class="form-control" id="eventsubject" rows="3" placeholder="Enter a Subject Meeting"></input>
-                </div>
-                <!-- Input for description -->
-                <div class="form-group">
-                    <label for="eventDescription">Description</label>
-                    <textarea class="form-control" id="eventDescription" rows="3" placeholder="Enter a brief description of the Meeting"></textarea>
-                </div>
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveEventButton">
-                    <p id="tulisanSave" style="margin: 0px">
-                        Save
-                    </p>
-                    <div id="loading" style="display: none">
-                        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span class="visually-hidden" role="status">Loading...</span>
-                    </div>
-                </button>
-                <button type="button" class="btn btn-danger" id="deleteEventButton" style="display: none;">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
 
             @vite('resources/js/app.js')
             <!-- jQuery, Moment.js, FullCalendar JS -->
@@ -324,12 +324,14 @@
                         $('#eventDescription').val('');
                         $('#eventsubject').val('');
 
+                        $('#tulisanSave').show();
+                        $('#loading').hide();
+                        $('#saveEventButton').prop('disabled', false);
+
                         $('#deleteEventButton').hide();
 
                         $('#saveEventButton').off('click').on('click', function() {
-                            $('#tulisanSave').hide();
-                            $('#loading').show();
-                            $('#saveEventButton').prop('disabled', true);
+                          
                             var name = $('#eventName').val();  
                             var title = $('#eventTitle').val();
                             var date = $('#eventDate').val();
@@ -341,7 +343,9 @@
                             if (name && title && date && startTime && endTime) {
                                 var startFormatted = moment(date + ' ' + startTime).format("YYYY-MM-DD HH:mm:ss");
                                 var endFormatted = moment(date + ' ' + endTime).format("YYYY-MM-DD HH:mm:ss");
-
+                                $('#tulisanSave').hide();
+                                $('#loading').show();
+                                $('#saveEventButton').prop('disabled', true);
                                 $.ajax({
                                     url: SITEURL + "/fullCalenderAjax",
                                     type: "POST",
@@ -377,6 +381,7 @@
                                         $('#eventEndTime').val('');
                                         $('#eventDescription').val('');
                                         $('#eventsubject').val('');
+                                        
                                         $('#tulisanSave').show();
                                         $('#loading').hide();
                                         $('#saveEventButton').prop('disabled', false);
@@ -392,6 +397,7 @@
                     },
 
                     eventClick: function(event) {
+                        console.log(event);
                         $('#eventModalLabel').text('Edit Booking');
                         $('#eventName').val(event.name);  
                         $('#eventTitle').val(event.title);
