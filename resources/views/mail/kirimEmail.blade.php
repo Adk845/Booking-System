@@ -2,15 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Event Notification</title>
+<title>Booking Room Notification</title>
 </head>
 <body>
-    <h1>Event Notification</h1>
-    <p>Event: {{ $data_email['title'] }}</p>
-    <p>Nama: {{ $data_email['name']}}</p>
-    <p>Nama Email: {{ $data_email['user_email'] }}</p>
-    <p>Dimulai pada: {{ $data_email['start'] }}</p>
-    <p>Berakhir pada: {{ $data_email['end'] }}</p>
-    <p>Terimakasih telah menggunakan sistem kami!</p>
+    <h1>Booking Room Notification</h1>
+    <p>Room: {{ $data_email['title'] }}</p>
+    <p>Name: {{ $data_email['name'] }}</p>
+    <p>Email: {{ $data_email['user_email'] }}</p>
+    <p>Starts at: {{ $data_email['start'] }}</p>
+    <p>Ends at: {{ $data_email['end'] }}</p>
+    <p>Thank you for using our system!</p>
 </body>
+
 </html>

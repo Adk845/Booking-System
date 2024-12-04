@@ -18,12 +18,23 @@ class kirimEmail extends Mailable
      * Create a new message instance.
      */
     public $data_email;
-    public function __construct($data_email)
+    public function __construct($data_email, $ics_filename)
     {
-        //
         $this->data_email = $data_email;
+        $this->ics_filename = $ics_filename; // Menyimpan path file ICS
     }
-
+    
+    public function build()
+    {
+        return $this->subject($this->data_email['subject'])
+                    ->from($this->data_email['sender_email'], $this->data_email['sender_name'])
+                    ->view('mail.kirimEmail')
+                    ->attach($this->ics_filename, [
+                        'as' => 'meeting_event.ics',
+                        'mime' => 'text/calendar',
+                    ]);
+    }
+    
     /**
      * Get the message envelope.
      * buat custom sender dan subject email
