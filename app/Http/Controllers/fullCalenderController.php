@@ -124,8 +124,8 @@ class fullCalenderController extends Controller
                 $ics_content .= "BEGIN:VEVENT\r\n";
                 $ics_content .= "SUMMARY:" . $request->title . "\r\n";
                 $ics_content .= "DESCRIPTION:" . $request->desc . "\r\n";
-                $ics_content .= "DTSTART:" . \Carbon\Carbon::parse($request->start)->format('Ymd\THis\Z') . "\r\n";
-                $ics_content .= "DTEND:" . \Carbon\Carbon::parse($request->end)->format('Ymd\THis\Z') . "\r\n";
+                $ics_content .= "DTSTART:" . \Carbon\Carbon::parse($request->start)->format('Ymd\THis') . "\r\n";
+                $ics_content .= "DTEND:" . \Carbon\Carbon::parse($request->end)->format('Ymd\THis') . "\r\n";
                 $ics_content .= "LOCATION:Meeting Room\r\n";
                 $ics_content .= "STATUS:CONFIRMED\r\n";
                 $ics_content .= "BEGIN:VALARM\r\n";
