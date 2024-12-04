@@ -97,6 +97,7 @@ class fullCalenderController extends Controller
                 $event = Event::create([
                     'name' => $request->name,
                     'desc' => $request->desc,
+                    'subject' => $request->subject,
                     'title' => $request->title,
                     'start' => $request->start,
                     'end' => $request->end       
@@ -122,11 +123,11 @@ class fullCalenderController extends Controller
                 $ics_content .= "VERSION:2.0\r\n";
                 $ics_content .= "PRODID:-//Resindo//NONSGML v1.0//EN\r\n";
                 $ics_content .= "BEGIN:VEVENT\r\n";
-                $ics_content .= "SUMMARY:" . $request->title . "\r\n";
+                $ics_content .= "SUMMARY:" . $request->subject . "\r\n";
                 $ics_content .= "DESCRIPTION:" . $request->desc . "\r\n";
                 $ics_content .= "DTSTART:" . \Carbon\Carbon::parse($request->start)->format('Ymd\THis') . "\r\n";
                 $ics_content .= "DTEND:" . \Carbon\Carbon::parse($request->end)->format('Ymd\THis') . "\r\n";
-                $ics_content .= "LOCATION:Meeting Room\r\n";
+                $ics_content .= "LOCATION:" . $request->title . "\r\n";
                 $ics_content .= "STATUS:CONFIRMED\r\n";
                 $ics_content .= "BEGIN:VALARM\r\n";
                 $ics_content .= "TRIGGER:-PT10M\r\n";  // Mengatur pengingat waktu 
@@ -156,6 +157,7 @@ class fullCalenderController extends Controller
                     $event->update([
                         'name' => $request->name,
                         'desc' => $request->desc,
+                        'subject' => $request->subject,
                         'title' => $request->title,
                         'start' => $request->start,  
                         'end' => $request->end       

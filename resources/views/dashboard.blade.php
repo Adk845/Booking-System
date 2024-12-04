@@ -206,12 +206,16 @@
                         <option value="Tradis Room">Tradis Room</option>
                     </select>
                 </div>
-
+                <div class="form-group">
+                    <label for="eventsubject">Subject Meeting</label>
+                    <input class="form-control" id="eventsubject" rows="3" placeholder="Enter a Subject Meeting"></input>
+                </div>
                 <!-- Input for description -->
                 <div class="form-group">
                     <label for="eventDescription">Description</label>
-                    <textarea class="form-control" id="eventDescription" rows="3" placeholder="Enter a brief description of the event"></textarea>
+                    <textarea class="form-control" id="eventDescription" rows="3" placeholder="Enter a brief description of the Meeting"></textarea>
                 </div>
+
 
             </div>
             <div class="modal-footer">
@@ -317,6 +321,9 @@
                         $('#eventDate').val(moment(start).format('YYYY-MM-DD'));
                         $('#eventStartTime').val(moment(start).format('HH:mm'));
                         $('#eventEndTime').val(moment(end).format('HH:mm'));
+                        $('#eventDescription').val('');
+                        $('#eventsubject').val('');
+
                         $('#deleteEventButton').hide();
 
                         $('#saveEventButton').off('click').on('click', function() {
@@ -328,6 +335,8 @@
                             var date = $('#eventDate').val();
                             var startTime = $('#eventStartTime').val();
                             var endTime = $('#eventEndTime').val();
+                            var desc = $('#eventDescription').val(); 
+                            var subject = $('#eventsubject').val(); 
 
                             if (name && title && date && startTime && endTime) {
                                 var startFormatted = moment(date + ' ' + startTime).format("YYYY-MM-DD HH:mm:ss");
@@ -338,6 +347,8 @@
                                     type: "POST",
                                     data: {
                                         name: name,
+                                        desc: desc,
+                                        subject: subject,
                                         title: title,
                                         start: startFormatted,
                                         end: endFormatted,
@@ -350,6 +361,8 @@
                                         calendar.fullCalendar('renderEvent', {
                                             id: data.id,
                                             name: name,  
+                                            desc: desc,
+                                            subject: subject,
                                             title: title,
                                             start: startFormatted,
                                             end: endFormatted,
@@ -362,6 +375,8 @@
                                         $('#eventDate').val('');
                                         $('#eventStartTime').val('');
                                         $('#eventEndTime').val('');
+                                        $('#eventDescription').val('');
+                                        $('#eventsubject').val('');
                                         $('#tulisanSave').show();
                                         $('#loading').hide();
                                         $('#saveEventButton').prop('disabled', false);
@@ -383,6 +398,8 @@
                         $('#eventDate').val(moment(event.start).format('YYYY-MM-DD'));
                         $('#eventStartTime').val(moment(event.start).format('HH:mm'));
                         $('#eventEndTime').val(moment(event.end).format('HH:mm'));
+                        $('#eventDescription').val(event.desc);  
+                        $('#eventsubject').val(event.subject);  
                         $('#deleteEventButton').show();
 
                         $('#saveEventButton').off('click').on('click', function() {
@@ -391,6 +408,8 @@
                             var date = $('#eventDate').val();
                             var startTime = $('#eventStartTime').val();
                             var endTime = $('#eventEndTime').val();
+                            var desc = $('#eventDescription').val(); 
+                            var subject = $('#eventsubject').val(); 
 
                             if (name && title && date && startTime && endTime) {
                                 var startFormatted = moment(date + ' ' + startTime).format("YYYY-MM-DD HH:mm:ss");
@@ -402,6 +421,8 @@
                                     data: {
                                         id: event.id,
                                         name: name,
+                                        desc: desc,
+                                        subject: subject,
                                         title: title,
                                         start: startFormatted,
                                         end: endFormatted,
@@ -411,6 +432,9 @@
                                         displayMessage("Booking Updated Successfully");
 
                                         event.name = name;
+                                        event.desc = desc;
+                                        event.subject = subject;
+                                        
                                         event.title = title;
                                         event.start = startFormatted;
                                         event.end = endFormatted;
@@ -459,6 +483,9 @@
                             url: SITEURL + '/fullCalenderAjax',
                             data: {
                                 name: event.name,
+                                desc: event.desc,
+                                subject: event.name,
+
                                 title: event.title,
                                 start: start,
                                 end: end,
