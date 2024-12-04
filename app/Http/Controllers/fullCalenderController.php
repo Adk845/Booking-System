@@ -83,7 +83,7 @@ class fullCalenderController extends Controller
            
             $data = Event::where('start', '>=', $request->start)
                         ->where('end', '<=', $request->end)
-                        ->get(['id','name', 'title', 'start', 'end']);
+                        ->get(['id','name', 'desc', 'subject', 'title', 'start', 'end']);
     
             return response()->json($data);
         }
