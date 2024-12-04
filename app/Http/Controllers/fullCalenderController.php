@@ -106,8 +106,8 @@ class fullCalenderController extends Controller
                 //variable yang juga akan dikirim ke template email di resource/view/mail/kirimEmail.blade.php
                 $data_email = [
                     'subject' => "Booking Meeting room notifications",
-                    'sender_email' => 'experimencobacoba@gmail.com',
-                    'sender_name' => 'Mathew',
+                    'sender_email' => 'Booking.Room@resindori.com',
+                    'sender_name' => 'Booking Room System',
                     'title' => $request->title,
                     'name' => $request->name,
                     'user_email' => $request->user_email,
