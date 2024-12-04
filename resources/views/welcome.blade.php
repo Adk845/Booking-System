@@ -136,15 +136,15 @@
             @vite('resources/css/app.css')
         </head>
         <body>
-    <nav class="bg-gray-800 p-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <nav class="bg-gray-800 p-1">
+        <div class="mx-auto flex justify-between items-center">
             <!-- Brand Name positioned at the left -->
-            <div class="text-white text-2xl font-bold">
-                <a href="/">Resindo</a>
+            <div class="text-white text-2xl font-bold ml-5">
+                <a href="/"><img src="{{ asset('img/logo.png') }}" alt="logo" style="height: 70px"></a>
             </div>
 
             <!-- Navigation Links -->
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-4 mr-5">
                 @if (Route::has('login'))
                     @auth
                         <a href="{{ url('/dashboard') }}" 
@@ -208,6 +208,35 @@
     $(document).ready(function () {
         var SITEURL = "{{ url('/') }}";
 
+        function side_menu(){
+                    $('#card_kontener').empty();
+                    $.ajax({
+                        url:  SITEURL + "/dashboard_api",
+                        method: "GET",
+                        success: function(datas){
+                            console.log(datas)
+                            datas.forEach(function(data){
+                                var room = data.title ==  'Komodo Room' ? 'Komodo' : 'Tradis'
+                                console.log(room)
+                                $('#card_kontener').append(
+                                    `
+                                    <div class="card m-3">
+                                        <div class="card-header ${room}">
+                                        ${data.title}
+                                        </div>
+                                        <div class="card-body">
+                                        <h5 class="card-title">${data.date_start} - ${data.day}</h5>
+                                        <p>${data.time_start} - ${data.time_end}</p>
+                                        <p>Booked by : ${data.name}</p>
+                                        </div>
+                                    </div>
+                    `
+                                )
+                            })
+                        }
+                    })
+                }
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -248,10 +277,12 @@
                 $('#eventModal').modal('show');
             }
         });
+        side_menu();
     });
+   
 </script>
 
-            <script type="module" src="{{ asset('js/calender.js') }}"></script>
+            <!-- <script type="module" src="{{ asset('js/calender.js') }}"></script> -->
             <!-- Bootstrap JS -->
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
         </body>
