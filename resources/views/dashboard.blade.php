@@ -257,10 +257,10 @@
                         url:  SITEURL + "/dashboard_api",
                         method: "GET",
                         success: function(datas){
-                            console.log(datas)
+                            //console.log(datas)
                             datas.forEach(function(data){
                                 var room = data.title ==  'Komodo Room' ? 'Komodo' : 'Tradis'
-                                console.log(room)
+                                //console.log(room)
                                 $('#card_kontener').append(
                                     `
                                     <div class="card m-3">
@@ -361,6 +361,7 @@
                                         type: 'add'
                                     },
                                     success: function(data) {
+                                        console.log(data);
                                         displayMessage("Booking Created Successfully");
                                         calendar.fullCalendar('renderEvent', {
                                             id: data.id,
@@ -432,9 +433,12 @@
                                         title: title,
                                         start: startFormatted,
                                         end: endFormatted,
+                                        user_email: user_email,
+                                        user_name: user_name,
                                         type: 'update'
                                     },
                                     success: function(data) {
+                                        console.log(data);
                                         displayMessage("Booking Updated Successfully");
 
                                         event.name = name;
