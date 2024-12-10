@@ -7,10 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
-class kirimEmail extends Mailable
+class updateMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -23,21 +22,20 @@ class kirimEmail extends Mailable
         $this->data_email = $data_email;
         $this->ics_filename = $ics_filename; // Menyimpan path file ICS
     }
-    
+
     public function build()
     {
         return $this->subject($this->data_email['subject'])
                     ->from($this->data_email['sender_email'], $this->data_email['sender_name'])
-                    ->view('mail.kirimEmail')
+                    ->view('mail.updateEmail')
                     ->attach($this->ics_filename, [
                         'as' => 'meeting_event.ics',
                         'mime' => 'text/calendar',
                     ]);
     }
-    
+
     /**
      * Get the message envelope.
-     * buat custom sender dan subject email
      */
     public function envelope(): Envelope
     {
@@ -49,17 +47,13 @@ class kirimEmail extends Mailable
 
     /**
      * Get the message content definition.
-     * disini untuk mengatur konten isi email nnya 
-     * mail\kirimEmail, itu folder mail yang ada di resources/view/mail/kirimEmail.blade.php
      */
     public function content(): Content
     {
         return new Content(
-            // view: 'mail\kirimEmail',
-            view: $this->data_email['email_template'],
+            view: 'mail\updateEmail',
         );
     }
-
 
     /**
      * Get the attachments for the message.
