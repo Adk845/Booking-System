@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\kirimEmail;
+use App\Mail\updateMail;
 use App\Models\event;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -107,6 +108,7 @@ class fullCalenderController extends Controller
             
 
                 $data_email = [
+                    'email_template' => 'mail\kirimEmail',
                     'subject' => "Booking Meeting room notifications",
                     'sender_email' => 'Booking.Room@resindori.com',
                     'sender_name' => 'Booking Room System',
@@ -147,7 +149,7 @@ class fullCalenderController extends Controller
                 // Menghapus file ICS setelah dikirim
                 unlink($ics_filename);
             
-                return response()->json($event);
+                return response()->json($data_email);
                 break;
             
     
@@ -162,7 +164,52 @@ class fullCalenderController extends Controller
                         'start' => $request->start,  
                         'end' => $request->end       
                     ]);
-                    return response()->json($event);
+
+                    
+                $data_email = [
+                    'email_template' => 'mail\updateEmail',
+                    'subject' => "Update Booking Meeting room Schedule",
+                    'sender_email' => 'Booking.Room@resindori.com',
+                    'sender_name' => 'Booking Room System',
+                    'title' => $request->title,
+                    'name' => $request->name,
+                    'desc' => $request->desc,
+                    'user_email' => $request->user_email,
+                    'start' => $request->start,
+                    'end' => $request->end,
+                ];
+            
+                // Membuat file 
+                $ics_content = "BEGIN:VCALENDAR\r\n";
+                $ics_content .= "VERSION:2.0\r\n";
+                $ics_content .= "PRODID:-//Resindo//NONSGML v1.0//EN\r\n";
+                $ics_content .= "BEGIN:VEVENT\r\n";
+                $ics_content .= "SUMMARY:" . $request->subject . "\r\n";
+                $ics_content .= "DESCRIPTION:" . $request->desc . "\r\n";
+                $ics_content .= "DTSTART:" . \Carbon\Carbon::parse($request->start)->format('Ymd\THis') . "\r\n";
+                $ics_content .= "DTEND:" . \Carbon\Carbon::parse($request->end)->format('Ymd\THis') . "\r\n";
+                $ics_content .= "LOCATION:" . $request->title . "\r\n";
+                $ics_content .= "STATUS:CONFIRMED\r\n";
+                $ics_content .= "BEGIN:VALARM\r\n";
+                $ics_content .= "TRIGGER:-PT10M\r\n";  // Mengatur pengingat waktu 
+                $ics_content .= "DESCRIPTION:Reminder\r\n";
+                $ics_content .= "ACTION:DISPLAY\r\n";
+                $ics_content .= "END:VALARM\r\n";
+                $ics_content .= "END:VEVENT\r\n";
+                $ics_content .= "END:VCALENDAR\r\n";
+            
+                // Simpan file ICS sementara di server
+                $ics_filename = storage_path('app/meeting_event.ics');
+                file_put_contents($ics_filename, $ics_content);
+            
+                // Kirim email dengan lampiran ICS
+                // Mail::to($request->user_email)->send(new updateMail($data_email, $ics_filename));
+                Mail::to($request->user_email)->send(new kirimEmail($data_email, $ics_filename));
+            
+                // Menghapus file ICS setelah dikirim
+                unlink($ics_filename);
+
+                    return response()->json($data_email);
                 }
                 break;
     
