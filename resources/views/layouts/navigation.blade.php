@@ -39,6 +39,11 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        @if( Auth::user()->name == 'IT_Support')
+                        <x-dropdown-link :href="route('register-as-admin')">
+                           Register New User
+                        </x-dropdown-link>
+                        @endif
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

@@ -235,6 +235,19 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="successRegister" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color: #d1e7dd">
+                    <div class="modal-header bg-success">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p class="h1">New account has been created</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+
             @vite('resources/js/app.js')
             <!-- jQuery, Moment.js, FullCalendar JS -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -247,7 +260,15 @@
                  var user_name = "{{ Auth::user()->name }}";
                  var user_email = "{{ Auth::user()->email }}"
 
-                                
+                @if(session('success'))
+                    $(document).ready(function(){
+                            $('#successRegister').modal('show');
+                        })
+                @endif
+
+                // $(document).ready(function(){
+                //         $('#successRegister').modal('show');
+                //     })
 
                 $(document).ready(function(){
 
