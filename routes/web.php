@@ -43,3 +43,7 @@ Route::get('/fullcalender', [fullCalenderController::class, 'index'])->name('ind
 Route::post('/fullCalenderAjax', [fullCalenderController::class, 'ajax'])->name('ajax');
 
 require __DIR__.'/auth.php';
+
+//test
+Route::get('/test', [fullCalenderController::class, 'test_view'])->name('test_view');
+Route::post('/test', [fullCalenderController::class, 'test_send'])->name('test_send');

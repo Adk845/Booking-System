@@ -166,6 +166,25 @@
                         
                         </div>
                       </div>
+
+                      <div class="card mt-3" style="border-radius: 15px">
+                        <div class="card-header">
+                          Input ICS File
+                        </div>
+                        <div class="card-body">
+                         <div class="information_row d-flex align-items-center mb-3">
+                           <form action="" class="form">
+                            <div>
+                                <input class="form-control" type="file" name="file" id="file">
+                            </div>
+                           </form>
+                           <div>
+                                <button class="btn btn-success" id="save_ics">Save</button>
+                           </div>
+                         </div>
+                        
+                        </div>
+                      </div>
                 </div>
             </div>
     
@@ -251,6 +270,10 @@
 
                 $(document).ready(function(){
 
+                  
+                
+
+
                 function side_menu(){
                     $('#card_kontener').empty();
                     $.ajax({
@@ -290,225 +313,226 @@
                         }
                     });
 
-                    var calendar = $('#calendar').fullCalendar({
-                    header: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'month,agendaWeek,agendaDay'
-                    },
-                    editable: true,
-                    droppable: true,
-                    events: SITEURL + "/fullcalender",
-                    displayEventTime: true,
-                    selectable: true,
-                    selectHelper: true,
+                        var calendar = $('#calendar').fullCalendar(
+                            {
+                                header: {
+                                    left: 'prev,next today',
+                                    center: 'title',
+                                    right: 'month,agendaWeek,agendaDay'
+                                },
+                                editable: true,
+                                droppable: true,
+                                events: SITEURL + "/fullcalender",
+                                displayEventTime: true,
+                                selectable: true,
+                                selectHelper: true,
 
-                    eventRender: function(event, element) {
-                        
-                        element.find('.fc-title').append("<br><strong>" + event.name + "</strong>");
-
-                        if (event.title === "Tradis Room") {
-                        element.css("background-color", "#FEEE91"); 
-                    } else if (event.title === "Komodo") {
-                        element.css("background-color", "#EB5B00"); 
-                    }
-                    },
-
-                    select: function(start, end, allDay) {
-                        $('#eventModalLabel').text('Create Booking');
-                        $('#eventName').val(loggedInUserName);  
-                        $('#eventTitle').val('');
-                        $('#eventDate').val(moment(start).format('YYYY-MM-DD'));
-                        $('#eventStartTime').val(moment(start).format('HH:mm'));
-                        $('#eventEndTime').val(moment(end).format('HH:mm'));
-                        $('#eventDescription').val('');
-                        $('#eventsubject').val('');
-
-                        $('#tulisanSave').show();
-                        $('#loading').hide();
-                        $('#saveEventButton').prop('disabled', false);
-
-                        $('#deleteEventButton').hide();
-
-                        $('#saveEventButton').off('click').on('click', function() {
-                          
-                            var name = $('#eventName').val();  
-                            var title = $('#eventTitle').val();
-                            var date = $('#eventDate').val();
-                            var startTime = $('#eventStartTime').val();
-                            var endTime = $('#eventEndTime').val();
-                            var desc = $('#eventDescription').val(); 
-                            var subject = $('#eventsubject').val(); 
-
-                            if (name && title && date && startTime && endTime) {
-                                var startFormatted = moment(date + ' ' + startTime).format("YYYY-MM-DD HH:mm:ss");
-                                var endFormatted = moment(date + ' ' + endTime).format("YYYY-MM-DD HH:mm:ss");
-                                $('#tulisanSave').hide();
-                                $('#loading').show();
-                                $('#saveEventButton').prop('disabled', true);
-                                $.ajax({
-                                    url: SITEURL + "/fullCalenderAjax",
-                                    type: "POST",
-                                    data: {
-                                        name: name,
-                                        desc: desc,
-                                        subject: subject,
-                                        title: title,
-                                        start: startFormatted,
-                                        end: endFormatted,
-                                        user_email: user_email,
-                                        user_name: user_name,
-                                        type: 'add'
-                                    },
-                                    success: function(data) {
-                                        console.log(data);
-                                        displayMessage("Booking Created Successfully");
-                                        calendar.fullCalendar('renderEvent', {
-                                            id: data.id,
-                                            name: name,  
-                                            desc: desc,
-                                            subject: subject,
-                                            title: title,
-                                            start: startFormatted,
-                                            end: endFormatted,
-                                            allDay: allDay
-                                        }, true);
-                                        calendar.fullCalendar('unselect');
-                                        $('#eventModal').modal('hide');
-                                        $('#eventName').val('');
-                                        $('#eventTitle').val('');
-                                        $('#eventDate').val('');
-                                        $('#eventStartTime').val('');
-                                        $('#eventEndTime').val('');
-                                        $('#eventDescription').val('');
-                                        $('#eventsubject').val('');
-                                        
-                                        $('#tulisanSave').show();
-                                        $('#loading').hide();
-                                        $('#saveEventButton').prop('disabled', false);
-                                        side_menu();
-                                    }
-                                });
-                            } else {
-                                alert("Please fill in all fields.");
-                            }
-                        });
-
-                        $('#eventModal').modal('show');
-                    },
-
-                    eventClick: function(event) {
-                        console.log(event);
-                        $('#eventModalLabel').text('Edit Booking');
-                        $('#eventName').val(event.name);  
-                        $('#eventTitle').val(event.title);
-                        $('#eventDate').val(moment(event.start).format('YYYY-MM-DD'));
-                        $('#eventStartTime').val(moment(event.start).format('HH:mm'));
-                        $('#eventEndTime').val(moment(event.end).format('HH:mm'));
-                        $('#eventDescription').val(event.desc);  
-                        $('#eventsubject').val(event.subject);  
-                        $('#deleteEventButton').show();
-
-                        $('#saveEventButton').off('click').on('click', function() {
-                            var name = $('#eventName').val();  
-                            var title = $('#eventTitle').val();
-                            var date = $('#eventDate').val();
-                            var startTime = $('#eventStartTime').val();
-                            var endTime = $('#eventEndTime').val();
-                            var desc = $('#eventDescription').val(); 
-                            var subject = $('#eventsubject').val(); 
-
-                            if (name && title && date && startTime && endTime) {
-                                var startFormatted = moment(date + ' ' + startTime).format("YYYY-MM-DD HH:mm:ss");
-                                var endFormatted = moment(date + ' ' + endTime).format("YYYY-MM-DD HH:mm:ss");
-
-                                $.ajax({
-                                    url: SITEURL + "/fullCalenderAjax",
-                                    type: "POST",
-                                    data: {
-                                        id: event.id,
-                                        name: name,
-                                        desc: desc,
-                                        subject: subject,
-                                        title: title,
-                                        start: startFormatted,
-                                        end: endFormatted,
-                                        user_email: user_email,
-                                        user_name: user_name,
-                                        type: 'update'
-                                    },
-                                    success: function(data) {
-                                        console.log(data);
-                                        displayMessage("Booking Updated Successfully");
-
-                                        event.name = name;
-                                        event.desc = desc;
-                                        event.subject = subject;
-                                        
-                                        event.title = title;
-                                        event.start = startFormatted;
-                                        event.end = endFormatted;
-
-                                        calendar.fullCalendar('updateEvent', event);
-                                        $('#eventModal').modal('hide');
-                                        side_menu();
+                                eventRender: function(event, element) {
                                     
-                                    }
-                                });
-                            
-                            } else {
-                                alert("Please fill in all fields.");
-                            }
-                            // side_menu();
-                        });
+                                    element.find('.fc-title').append("<br><strong>" + event.name + "</strong>");
 
-                        $('#deleteEventButton').off('click').on('click', function() {
-                            var deleteMsg = confirm("Do you really want to delete?");
-                            if (deleteMsg) {
-                                $.ajax({
-                                    type: "POST",
-                                    url: SITEURL + '/fullCalenderAjax',
-                                    data: {
-                                        id: event.id,
-                                        type: 'delete'
-                                    },
-                                    success: function(response) {
-                                        calendar.fullCalendar('removeEvents', event.id);
-                                        displayMessage("Booking Deleted Successfully");
-                                        $('#eventModal').modal('hide');
-                                    }
-                                });
-                            }
-                            side_menu();
-                        });
+                                    if (event.title === "Tradis Room") {
+                                    element.css("background-color", "#FEEE91"); 
+                                } else if (event.title === "Komodo") {
+                                    element.css("background-color", "#EB5B00"); 
+                                }
+                                },
 
-                        $('#eventModal').modal('show');
-                    },
+                                select: function(start, end, allDay) {
+                                    $('#eventModalLabel').text('Create Booking');
+                                    $('#eventName').val(loggedInUserName);  
+                                    $('#eventTitle').val('');
+                                    $('#eventDate').val(moment(start).format('YYYY-MM-DD'));
+                                    $('#eventStartTime').val(moment(start).format('HH:mm'));
+                                    $('#eventEndTime').val(moment(end).format('HH:mm'));
+                                    $('#eventDescription').val('');
+                                    $('#eventsubject').val('');
 
-                    eventDrop: function(event, delta) {
-                        var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
-                        var end = $.fullCalendar.formatDate(event.end, "YYYY-MM-DD HH:mm:ss");
+                                    $('#tulisanSave').show();
+                                    $('#loading').hide();
+                                    $('#saveEventButton').prop('disabled', false);
 
-                        $.ajax({
-                            url: SITEURL + '/fullCalenderAjax',
-                            data: {
-                                name: event.name,
-                                desc: event.desc,
-                                subject: event.name,
+                                    $('#deleteEventButton').hide();
 
-                                title: event.title,
-                                start: start,
-                                end: end,
-                                id: event.id,
-                                type: 'update'
-                            },
-                            type: "POST",
-                            success: function(response) {
-                                displayMessage("Booking Updated Successfully");
-                            }
-                        });
-                        side_menu();
-                    }
+                                    $('#saveEventButton').off('click').on('click', function() {
+                                    
+                                        var name = $('#eventName').val();  
+                                        var title = $('#eventTitle').val();
+                                        var date = $('#eventDate').val();
+                                        var startTime = $('#eventStartTime').val();
+                                        var endTime = $('#eventEndTime').val();
+                                        var desc = $('#eventDescription').val(); 
+                                        var subject = $('#eventsubject').val(); 
+
+                                        if (name && title && date && startTime && endTime) {
+                                            var startFormatted = moment(date + ' ' + startTime).format("YYYY-MM-DD HH:mm:ss");
+                                            var endFormatted = moment(date + ' ' + endTime).format("YYYY-MM-DD HH:mm:ss");
+                                            $('#tulisanSave').hide();
+                                            $('#loading').show();
+                                            $('#saveEventButton').prop('disabled', true);
+                                            $.ajax({
+                                                url: SITEURL + "/fullCalenderAjax",
+                                                type: "POST",
+                                                data: {
+                                                    name: name,
+                                                    desc: desc,
+                                                    subject: subject,
+                                                    title: title,
+                                                    start: startFormatted,
+                                                    end: endFormatted,
+                                                    user_email: user_email,
+                                                    user_name: user_name,
+                                                    type: 'add'
+                                                },
+                                                success: function(data) {
+                                                    console.log(data);
+                                                    displayMessage("Booking Created Successfully");
+                                                    calendar.fullCalendar('renderEvent', {
+                                                        id: data.id,
+                                                        name: name,  
+                                                        desc: desc,
+                                                        subject: subject,
+                                                        title: title,
+                                                        start: startFormatted,
+                                                        end: endFormatted,
+                                                        allDay: allDay
+                                                    }, true);
+                                                    calendar.fullCalendar('unselect');
+                                                    $('#eventModal').modal('hide');
+                                                    $('#eventName').val('');
+                                                    $('#eventTitle').val('');
+                                                    $('#eventDate').val('');
+                                                    $('#eventStartTime').val('');
+                                                    $('#eventEndTime').val('');
+                                                    $('#eventDescription').val('');
+                                                    $('#eventsubject').val('');
+                                                    
+                                                    $('#tulisanSave').show();
+                                                    $('#loading').hide();
+                                                    $('#saveEventButton').prop('disabled', false);
+                                                    side_menu();
+                                                }
+                                            });
+                                        } else {
+                                            alert("Please fill in all fields.");
+                                        }
+                                    });
+
+                                    $('#eventModal').modal('show');
+                                },
+
+                                eventClick: function(event) {
+                                    console.log(event);
+                                    $('#eventModalLabel').text('Edit Booking');
+                                    $('#eventName').val(event.name);  
+                                    $('#eventTitle').val(event.title);
+                                    $('#eventDate').val(moment(event.start).format('YYYY-MM-DD'));
+                                    $('#eventStartTime').val(moment(event.start).format('HH:mm'));
+                                    $('#eventEndTime').val(moment(event.end).format('HH:mm'));
+                                    $('#eventDescription').val(event.desc);  
+                                    $('#eventsubject').val(event.subject);  
+                                    $('#deleteEventButton').show();
+
+                                    $('#saveEventButton').off('click').on('click', function() {
+                                        var name = $('#eventName').val();  
+                                        var title = $('#eventTitle').val();
+                                        var date = $('#eventDate').val();
+                                        var startTime = $('#eventStartTime').val();
+                                        var endTime = $('#eventEndTime').val();
+                                        var desc = $('#eventDescription').val(); 
+                                        var subject = $('#eventsubject').val(); 
+
+                                        if (name && title && date && startTime && endTime) {
+                                            var startFormatted = moment(date + ' ' + startTime).format("YYYY-MM-DD HH:mm:ss");
+                                            var endFormatted = moment(date + ' ' + endTime).format("YYYY-MM-DD HH:mm:ss");
+
+                                            $.ajax({
+                                                url: SITEURL + "/fullCalenderAjax",
+                                                type: "POST",
+                                                data: {
+                                                    id: event.id,
+                                                    name: name,
+                                                    desc: desc,
+                                                    subject: subject,
+                                                    title: title,
+                                                    start: startFormatted,
+                                                    end: endFormatted,
+                                                    user_email: user_email,
+                                                    user_name: user_name,
+                                                    type: 'update'
+                                                },
+                                                success: function(data) {
+                                                    console.log(data);
+                                                    displayMessage("Booking Updated Successfully");
+
+                                                    event.name = name;
+                                                    event.desc = desc;
+                                                    event.subject = subject;
+                                                    
+                                                    event.title = title;
+                                                    event.start = startFormatted;
+                                                    event.end = endFormatted;
+
+                                                    calendar.fullCalendar('updateEvent', event);
+                                                    $('#eventModal').modal('hide');
+                                                    side_menu();
+                                                
+                                                }
+                                            });
+                                        
+                                        } else {
+                                            alert("Please fill in all fields.");
+                                        }
+                                        // side_menu();
+                                    });
+
+                                    $('#deleteEventButton').off('click').on('click', function() {
+                                        var deleteMsg = confirm("Do you really want to delete?");
+                                        if (deleteMsg) {
+                                            $.ajax({
+                                                type: "POST",
+                                                url: SITEURL + '/fullCalenderAjax',
+                                                data: {
+                                                    id: event.id,
+                                                    type: 'delete'
+                                                },
+                                                success: function(response) {
+                                                    calendar.fullCalendar('removeEvents', event.id);
+                                                    displayMessage("Booking Deleted Successfully");
+                                                    $('#eventModal').modal('hide');
+                                                }
+                                            });
+                                        }
+                                        side_menu();
+                                    });
+
+                                    $('#eventModal').modal('show');
+                                },
+
+                                eventDrop: function(event, delta) {
+                                    var start = $.fullCalendar.formatDate(event.start, "YYYY-MM-DD HH:mm:ss");
+                                    var end = $.fullCalendar.formatDate(event.end, "YYYY-MM-DD HH:mm:ss");
+
+                                    $.ajax({
+                                        url: SITEURL + '/fullCalenderAjax',
+                                        data: {
+                                            name: event.name,
+                                            desc: event.desc,
+                                            subject: event.name,
+
+                                            title: event.title,
+                                            start: start,
+                                            end: end,
+                                            id: event.id,
+                                            type: 'update'
+                                        },
+                                        type: "POST",
+                                        success: function(response) {
+                                            displayMessage("Booking Updated Successfully");
+                                        }
+                                    });
+                                    side_menu();
+                                }
                 });
 
                 function displayMessage(message) {
@@ -522,7 +546,42 @@
                 });
 
                 side_menu();
+
+                $('#save_ics').click(function () {
+                    var input = $('#file')[0].files[0];
+
+                    if (!input) {
+                        alert('Please insert an ICS file');
+                        return;
+                    }
+
+                    var formData = new FormData(); // Huruf besar "F"
+                    formData.append('file', input);
+
+                    $.ajax({
+                        url: SITEURL + "/test", // Pastikan URL benar
+                        type: 'POST',
+                        data: formData,
+                        processData: false, // Jangan memproses data ini wajib adanya untuk FormData
+                        contentType: false, // Jangan menetapkan tipe konten ini wajib adanya untuk FormData
+                        success: function () {
+                            console.log('success');
+                            // calendar.fullCalendar('refetchEvents');
+                            side_menu();
+                            $('#calendar').fullCalendar('refetchEvents');
+                           
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                 
+                           
+
+                });
+               
                 })
+                
             </script>
             <!-- <script type="module" src="{{ asset('js/calender.js') }}"></script> -->
             <!-- Bootstrap JS -->

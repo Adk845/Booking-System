@@ -1,16 +1,53 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
+use App\Models\event;
 use App\Mail\kirimEmail;
 use App\Mail\updateMail;
-use App\Models\event;
-use Carbon\Carbon;
+use Sabre\VObject\Reader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Sabre\VObject\Component\VCalendar;
+
 class fullCalenderController extends Controller
 {
+    
+    public function test_view(){
+        return view('test');
+    }
+
+    public function test_send(Request $request){
+        $icsfile = $request->file('file');
+        $ics_content = file_get_contents($icsfile->getRealPath());
+        $data = [];
+        $hasil = Reader::read($ics_content);
+        foreach ($hasil->VEVENT as $event) {
+           
+            $data[] = [
+                'start' =>  $event->DTSTART->getDateTime(),
+                'end' =>  $event->DTEND->getDateTime(),
+                'status' => (string) $event->STATUS,
+                'summary' => (string) $event->SUMMARY,
+                'description' => (string) $event->DESCRIPTION,
+                'location' => (string) $event->LOCATION,
+                'organizer' => (string) $event->ORGANIZER,
+            ];
+        };
+       $events = $data[0];
+       $pattern = '/mailto:|@.*/';
+        $event = Event::create([
+            'name' => $events['organizer'] ? preg_replace($pattern, '',  $events['organizer'] ): 'organizer kosong',
+            'desc' => $events['description'] ? $events['description'] : 'description kosong',
+            'subject' => $events['summary'],
+            'title' => $events['location'],
+            'start' => $events['start'],
+            'end' => $events['end']       
+        ]);
+        return view('test');
+        return response()->json($events);
+    }
     //
     public function first() {
         return redirect()->route('index');
