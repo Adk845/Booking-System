@@ -1,40 +1,28 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    {{-- <script type='importmap'>
-      {
-        "imports": {
-          "@fullcalendar/core": "https://cdn.skypack.dev/@fullcalendar/core@6.1.15",
-          "@fullcalendar/daygrid": "https://cdn.skypack.dev/@fullcalendar/daygrid@6.1.15",
-          "@fullcalendar/interaction": "https://cdn.skypack.dev/@fullcalendar/interaction@6.1.15"
-        }
-      }
-    </script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>  
-    <script type='module'>
-      import { Calendar } from '@fullcalendar/core'
-      import dayGridPlugin from '@fullcalendar/daygrid'
-      import interactionPlugin from '@fullcalendar/interaction'
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+  <form action="{{ route('test_send') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <label for="file">Input file Ics</label>
+    <input type="file" name="file">
+    <button type="submit">submit</button>
+  </form>
+  <button id="kirim">kirim</button>
 
-      document.addEventListener('DOMContentLoaded', function() {
-        const calendarEl = document.getElementById('calendar')
-        const calendar = new Calendar(calendarEl, {
-          plugins: [dayGridPlugin, interactionPlugin],
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-          },
-          dateClick: function() {
-            alert('a day has been clicked!');
-  }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('#kirim').click(function(){
 
-        })
-        calendar.render()
       })
-    </script>
-  </head>
-  <body>
-    <div id='calendar'></div>
-  </body>
+    })
+  </script>
+</body>
 </html>
